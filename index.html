@@ -18,24 +18,26 @@
     <h1 class="text-3xl font-bold mb-6 text-green-400">🐍 Snake Game</h1>
     
     <canvas id="gameCanvas" class="w-full aspect-square bg-gray-800 rounded-xl shadow-lg border-4 border-green-600"></canvas>
-
-    <div class="mt-4 flex justify-between items-center text-lg">
+    
+    <div class="mt-4 flex justify-between items-center">
       <p>Score: <span id="score" class="font-bold text-green-400">0</span></p>
-      <button id="restartBtn" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg shadow transition">🔁 Restart</button>
+      <button id="restartBtn" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg shadow">
+        🔁 Restart
+      </button>
     </div>
 
     <!-- Kontrol Mobile -->
-    <div class="mt-6 grid grid-cols-3 gap-2 max-w-xs mx-auto">
+    <div class="mt-6 grid grid-cols-3 gap-3 sm:hidden">
       <div></div>
-      <button class="control-btn bg-green-500 hover:bg-green-600 py-3 rounded text-white" data-dir="UP">⬆️</button>
+      <button class="control-btn bg-green-700 hover:bg-green-600 text-white text-2xl py-3 rounded-lg shadow active:scale-95" data-dir="UP">⬆️</button>
       <div></div>
-
-      <button class="control-btn bg-green-500 hover:bg-green-600 py-3 rounded text-white" data-dir="LEFT">⬅️</button>
+      
+      <button class="control-btn bg-green-700 hover:bg-green-600 text-white text-2xl py-3 rounded-lg shadow active:scale-95" data-dir="LEFT">⬅️</button>
       <div></div>
-      <button class="control-btn bg-green-500 hover:bg-green-600 py-3 rounded text-white" data-dir="RIGHT">➡️</button>
-
+      <button class="control-btn bg-green-700 hover:bg-green-600 text-white text-2xl py-3 rounded-lg shadow active:scale-95" data-dir="RIGHT">➡️</button>
+      
       <div></div>
-      <button class="control-btn bg-green-500 hover:bg-green-600 py-3 rounded text-white" data-dir="DOWN">⬇️</button>
+      <button class="control-btn bg-green-700 hover:bg-green-600 text-white text-2xl py-3 rounded-lg shadow active:scale-95" data-dir="DOWN">⬇️</button>
       <div></div>
     </div>
   </div>

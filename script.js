@@ -19,6 +19,10 @@ let gameRunning = true;
 let gameInterval;
 let currentSpeed = 130;
 
+// Load sounds
+const eatSound = new Audio("https://cdn.pixabay.com/download/audio/2021/08/04/audio_9f1b9c43e3.mp3?filename=snake-hissing-6116.mp3");
+const gameOverSound = new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_3c5b8a0f3b.mp3?filename=game-over-arcade-6435.mp3");
+
 function spawnFood() {
   const x = Math.floor(Math.random() * cols) * box;
   const y = Math.floor(Math.random() * rows) * box;
@@ -75,6 +79,7 @@ function update() {
   ) {
     gameRunning = false;
     clearInterval(gameInterval);
+    gameOverSound.play();
     alert("💀 Game Over!\nSkor: " + score);
     return;
   }
@@ -85,6 +90,7 @@ function update() {
     score++;
     scoreEl.textContent = score;
     food = spawnFood();
+    eatSound.play();
     increaseSpeedIfNeeded();
   } else {
     snake.pop();
