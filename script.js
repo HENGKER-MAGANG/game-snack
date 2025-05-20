@@ -1,6 +1,5 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-
 const scoreEl = document.getElementById("score");
 const restartBtn = document.getElementById("restartBtn");
 
@@ -18,10 +17,7 @@ let food = spawnFood();
 let score = 0;
 let gameRunning = true;
 let gameInterval;
-
-for (let i = 5; i >= 0; i--) {
-  snake.push({ x: i * box, y: 10 * box });
-}
+let currentSpeed = 130;
 
 function spawnFood() {
   const x = Math.floor(Math.random() * cols) * box;
@@ -43,7 +39,6 @@ function drawSnake() {
   }
   ctx.stroke();
 
-  // Head highlight
   ctx.beginPath();
   ctx.arc(snake[0].x + box / 2, snake[0].y + box / 2, box / 3, 0, Math.PI * 2);
   ctx.fillStyle = "#4ade80";
@@ -90,6 +85,7 @@ function update() {
     score++;
     scoreEl.textContent = score;
     food = spawnFood();
+    increaseSpeedIfNeeded();
   } else {
     snake.pop();
   }
@@ -102,7 +98,39 @@ function gameLoop() {
   update();
 }
 
-// Kontrol
+function resetGame() {
+  snake = [];
+  for (let i = 5; i >= 0; i--) {
+    snake.push({ x: i * box, y: 10 * box });
+  }
+  direction = "RIGHT";
+  nextDirection = "RIGHT";
+  score = 0;
+  scoreEl.textContent = "0";
+  food = spawnFood();
+  gameRunning = true;
+  currentSpeed = 130;
+  clearInterval(gameInterval);
+  startGameWithSpeed(currentSpeed);
+}
+
+function startGameWithSpeed(speed) {
+  gameInterval = setInterval(() => {
+    gameLoop();
+  }, speed);
+}
+
+function increaseSpeedIfNeeded() {
+  if (score % 5 === 0 && score !== 0) {
+    if (currentSpeed > 60) {
+      currentSpeed -= 10;
+      clearInterval(gameInterval);
+      startGameWithSpeed(currentSpeed);
+    }
+  }
+}
+
+// Kontrol Keyboard
 document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowUp" && direction !== "DOWN") nextDirection = "UP";
   if (e.key === "ArrowDown" && direction !== "UP") nextDirection = "DOWN";
@@ -110,7 +138,7 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowRight" && direction !== "LEFT") nextDirection = "RIGHT";
 });
 
-// Swipe
+// Kontrol Mobile: swipe
 let touchX, touchY;
 canvas.addEventListener("touchstart", (e) => {
   touchX = e.touches[0].clientX;
@@ -130,25 +158,21 @@ canvas.addEventListener("touchmove", (e) => {
   touchY = null;
 });
 
-// Restart
+// Kontrol Mobile: tombol
+document.querySelectorAll(".control-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const dir = btn.getAttribute("data-dir");
+    if (dir === "UP" && direction !== "DOWN") nextDirection = "UP";
+    if (dir === "DOWN" && direction !== "UP") nextDirection = "DOWN";
+    if (dir === "LEFT" && direction !== "RIGHT") nextDirection = "LEFT";
+    if (dir === "RIGHT" && direction !== "LEFT") nextDirection = "RIGHT";
+  });
+});
+
+// Restart button
 restartBtn.addEventListener("click", () => {
   resetGame();
 });
 
-function resetGame() {
-  snake = [];
-  for (let i = 5; i >= 0; i--) {
-    snake.push({ x: i * box, y: 10 * box });
-  }
-  direction = "RIGHT";
-  nextDirection = "RIGHT";
-  score = 0;
-  scoreEl.textContent = "0";
-  food = spawnFood();
-  gameRunning = true;
-  clearInterval(gameInterval);
-  gameInterval = setInterval(gameLoop, 130); // atur kecepatan di sini (130ms antar gerakan)
-}
-
-// Mulai
+// Start game
 resetGame();
