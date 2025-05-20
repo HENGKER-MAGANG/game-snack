@@ -2,46 +2,68 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Snake Game</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- PWA Meta & Manifest -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Snake Game Modern bisa dimainkan offline" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
   <style>
     canvas {
-      touch-action: none;
       display: block;
-      margin: 0 auto;
+      margin: auto;
+      touch-action: none;
     }
   </style>
 </head>
 <body class="bg-gradient-to-br from-gray-900 to-black text-white flex items-center justify-center min-h-screen px-4">
   <div class="text-center w-full max-w-md">
-    <h1 class="text-3xl font-bold mb-6 text-green-400">🐍 Snake Game</h1>
+    <h1 class="text-3xl font-bold mb-6 text-green-400 animate-pulse">🐍 Snake Game</h1>
     
     <canvas id="gameCanvas" class="w-full aspect-square bg-gray-800 rounded-xl shadow-lg border-4 border-green-600"></canvas>
     
     <div class="mt-4 flex justify-between items-center">
       <p>Score: <span id="score" class="font-bold text-green-400">0</span></p>
-      <button id="restartBtn" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg shadow">
-        🔁 Restart
-      </button>
+      <button id="restartBtn" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg shadow">🔁 Restart</button>
     </div>
 
-    <!-- Kontrol Mobile -->
+    <!-- Tombol kontrol mobile -->
     <div class="mt-6 grid grid-cols-3 gap-3 sm:hidden">
       <div></div>
-      <button class="control-btn bg-green-700 hover:bg-green-600 text-white text-2xl py-3 rounded-lg shadow active:scale-95" data-dir="UP">⬆️</button>
+      <button class="control-btn bg-green-700 text-white text-2xl py-3 rounded-lg shadow active:scale-95" data-dir="UP">⬆️</button>
       <div></div>
       
-      <button class="control-btn bg-green-700 hover:bg-green-600 text-white text-2xl py-3 rounded-lg shadow active:scale-95" data-dir="LEFT">⬅️</button>
+      <button class="control-btn bg-green-700 text-white text-2xl py-3 rounded-lg shadow active:scale-95" data-dir="LEFT">⬅️</button>
       <div></div>
-      <button class="control-btn bg-green-700 hover:bg-green-600 text-white text-2xl py-3 rounded-lg shadow active:scale-95" data-dir="RIGHT">➡️</button>
+      <button class="control-btn bg-green-700 text-white text-2xl py-3 rounded-lg shadow active:scale-95" data-dir="RIGHT">➡️</button>
       
       <div></div>
-      <button class="control-btn bg-green-700 hover:bg-green-600 text-white text-2xl py-3 rounded-lg shadow active:scale-95" data-dir="DOWN">⬇️</button>
+      <button class="control-btn bg-green-700 text-white text-2xl py-3 rounded-lg shadow active:scale-95" data-dir="DOWN">⬇️</button>
       <div></div>
     </div>
   </div>
 
+  <!-- Audio -->
+  <audio id="eatSound" src="sounds/eat.wav" preload="auto"></audio>
+  <audio id="gameOverSound" src="sounds/gameover.wav" preload="auto"></audio>
+  <audio id="bgMusic" src="sounds/back.mp3" preload="auto" loop></audio>
+
+  <!-- Script Game -->
   <script src="script.js"></script>
+
+  <!-- PWA Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('✅ Service Worker registered'))
+        .catch(err => console.error('❌ Service Worker failed:', err));
+    }
+  </script>
 </body>
 </html>
